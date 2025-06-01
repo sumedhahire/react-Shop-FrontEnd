@@ -8,6 +8,8 @@ export default function Header() {
   const userData = localStorage.getItem('user');
   const user = userData ? JSON.parse(userData) : null;
   const isAdmin = user?.role === 'admin';
+  const isUser = user?.role === 'user';
+  
 
   return (
     <header className="site-header">
@@ -20,8 +22,10 @@ export default function Header() {
           <Link to="/" className="nav-link">Home</Link>
           <Link to="/about-us" className="nav-link">About</Link>
           <Link to="/inventory" className="nav-link">Inventory</Link>
-          <Link to="/cart" className="nav-link">Cart</Link>
+
+          {isUser || isAdmin && <Link to="/cart" className="nav-link">Cart</Link>}
           {isAdmin && <Link to="/admin" className="nav-link">Admin</Link>}
+          
           <Link to="/profile" className="nav-link">Profile</Link>
         </nav>
       </div>

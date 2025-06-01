@@ -34,7 +34,7 @@ async function refreshToken() {
 authAxios.interceptors.request.use(async (config) => {
   if (isTokenExpired()) {
     await refreshToken();
-  }
+  }npm
 
   const token = localStorage.getItem('access_token');
   if (token) {

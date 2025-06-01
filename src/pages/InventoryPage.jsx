@@ -14,8 +14,6 @@ export default function InventoryPage() {
   const [isAddMode, setIsAddMode] = useState(false); // Track if "Add" mode is open
 
 
-
-  
   const fetchItems = async () => {
     try {
       const token = localStorage.getItem('access_token');
