@@ -1,0 +1,119 @@
+/* Header Wrapper */
+.site-header {
+  background-color: #ffffff; /* Light background */
+  color: #1b5e20; /* Deep green for text */
+  padding: 0.75rem 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Flex container */
+.header-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Logo & Site Name */
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+}
+
+.site-logo {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+}
+
+.site-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #2e7d32; /* Plant green */
+  user-select: none;
+}
+
+/* Navigation */
+.site-nav {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.nav-link {
+  color: #2e7d32;
+  font-weight: 500;
+  font-size: 1rem;
+  text-decoration: none;
+  padding: 0.25rem 0;
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.3s ease, color 0.3s ease;
+}
+
+.nav-link:hover,
+.nav-link:focus {
+  border-bottom: 2px solid #81c784; /* light green accent */
+  color: #1b5e20;
+  outline: none;
+}
+
+.profile-section {
+  position: relative;
+  margin-left: 1.5rem;
+  cursor: pointer;
+}
+
+.profile-icon {
+  color: #2e7d32;
+  transition: color 0.3s ease;
+}
+
+.profile-icon:hover {
+  color: #145214;
+}
+
+.profile-dropdown {
+  position: absolute;
+  right: 0;
+  top: 110%;
+  background: white;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  min-width: 180px;
+  color: #2e7d32;
+  z-index: 1000;
+}
+
+.profile-name {
+  font-weight: 600;
+  margin: 0 0 0.25rem 0;
+}
+
+.profile-email {
+  font-size: 0.9rem;
+  margin: 0 0 0.5rem 0;
+  color: #555;
+}
+
+.logout-button {
+  width: 100%;
+  padding: 0.4rem 0;
+  border: none;
+  border-radius: 20px;
+  background-color: #2e7d32;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.logout-button:hover {
+  background-color: #145214;
+}

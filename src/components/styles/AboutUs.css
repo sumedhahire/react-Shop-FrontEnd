@@ -1,0 +1,47 @@
+.aboutus-section {
+  background: linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.85)),
+              url('https://images.unsplash.com/photo-1616627981834-6e8f7b191ce3') no-repeat center center;
+  background-size: cover;
+  padding: 6rem 2rem;  /* More vertical and horizontal padding */
+  display: flex;
+  justify-content: center;
+}
+
+.aboutus-card {
+  width: 100%;
+  max-width: 1100px; /* Wider max width */
+  background: #ffffffdd; /* semi-transparent */
+  border-radius: 20px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.18);
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  padding: 3rem 4rem;  /* Bigger padding inside */
+  flex-wrap: wrap; /* Responsive wrap */
+}
+
+.aboutus-icon {
+  font-size: 4rem;
+  color: #2e7d32;
+  flex-shrink: 0; /* Prevent shrinking */
+  margin-bottom: 1rem;
+}
+
+.aboutus-content {
+  flex: 1 1 400px; /* Flexible width, min 400px */
+  min-width: 280px;
+}
+
+.aboutus-title {
+  margin: 0 0 1.25rem;
+  font-size: 2.5rem;
+  color: #2e7d32;
+  font-weight: 700;
+}
+
+.aboutus-text {
+  margin: 0;
+  color: #333;
+  font-size: 1.25rem;
+  line-height: 1.7;
+}
