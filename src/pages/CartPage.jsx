@@ -1,5 +1,3 @@
-// File: pages/CartPage.js
-
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './styles/CartPage.css';
@@ -45,6 +43,22 @@ export default function CartPage() {
   const getTotal = (items) =>
     items.reduce((sum, item) => sum + (item.productId?.price || 0), 0);
 
+  const renderSkeletons = (count = 3) => (
+    <div className="cart-grid">
+      {Array.from({ length: count }).map((_, idx) => (
+        <div className="cart-card skeleton-card" key={idx}>
+          <div className="skeleton-img shimmer" />
+          <div className="cart-info">
+            <div className="skeleton-line shimmer" />
+            <div className="skeleton-line short shimmer" />
+            <div className="skeleton-line shimmer" />
+            <div className="skeleton-line shimmer" />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+
   const renderItemBlock = (items, title, emptyMsg) => (
     <section className="cart-section">
       <h2>{title}</h2>
@@ -55,12 +69,18 @@ export default function CartPage() {
           <div className="cart-grid">
             {items.map((item) => {
               const product = item.productId || {};
+              const imageUrl = item.imageUrl || product.imageUrl || 'https://www.svgrepo.com/show/413694/plant.svg';
               return (
                 <div className="cart-card" key={item.id}>
                   <img
-                    src={product.imageUrl || 'https://www.svgrepo.com/show/413694/plant.svg'}
+                    src={imageUrl}
                     alt={product.name || 'Product'}
                     className="cart-img"
+                    loading="lazy"
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = 'https://www.svgrepo.com/show/413694/plant.svg';
+                    }}
                   />
                   <div className="cart-info">
                     <h3>{product.name}</h3>
@@ -90,7 +110,10 @@ export default function CartPage() {
         </p>
 
         {loading ? (
-          <p className="loading-text">Loading...</p>
+          <>
+            {renderSkeletons(3)}
+            {renderSkeletons(3)}
+          </>
         ) : error ? (
           <p className="cart-error">{error}</p>
         ) : (

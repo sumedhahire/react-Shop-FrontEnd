@@ -3,11 +3,9 @@ import axios from 'axios';
 import EditModal from './EditModal';
 import './styles/InventoryTable.css';
 
-export default function InventoryTable({ items, token, refreshItems }) {
+export default function InventoryTable({ items, token, refreshItems, loading }) {
   const [editingItem, setEditingItem] = useState(null);
 
-  // console.log('Using token:', token);
-  // alert(token)
   const handleSave = async updatedData => {
     try {
       await axios.put(
@@ -18,7 +16,6 @@ export default function InventoryTable({ items, token, refreshItems }) {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
           },
-          
         }
       );
       setEditingItem(null);
@@ -27,6 +24,24 @@ export default function InventoryTable({ items, token, refreshItems }) {
       console.error('Update failed', err);
       alert('Failed to update item.');
     }
+  };
+
+  // Render skeleton rows during loading
+  const renderSkeletonRows = () => {
+    // e.g. 5 rows of skeleton
+    const skeletonRows = [];
+    for (let i = 0; i < 5; i++) {
+      skeletonRows.push(
+        <tr key={`skeleton-${i}`} className="skeleton-row">
+          <td><div className="skeleton-box" /></td>
+          <td><div className="skeleton-box" /></td>
+          <td><div className="skeleton-box" /></td>
+          <td><div className="skeleton-box" /></td>
+          <td><div className="skeleton-box btn-skeleton" /></td>
+        </tr>
+      );
+    }
+    return skeletonRows;
   };
 
   return (
@@ -42,17 +57,20 @@ export default function InventoryTable({ items, token, refreshItems }) {
           </tr>
         </thead>
         <tbody>
-          {items.map(item => (
-            <tr key={item.id}>
-              <td>{item.name}</td>
-              <td>{item.description}</td>
-              <td>₹{item.price}</td>
-              <td>{Array.isArray(item.tags) && item.tags.length ? item.tags.join(', ') : '-'}</td>
-              <td>
-                <button onClick={() => setEditingItem(item)}>Edit</button>
-              </td>
-            </tr>
-          ))}
+          {loading
+            ? renderSkeletonRows()
+            : items.map(item => (
+              <tr key={item.id}>
+                <td>{item.name}</td>
+                <td>{item.description}</td>
+                <td>₹{item.price}</td>
+                <td>{Array.isArray(item.tags) && item.tags.length ? item.tags.join(', ') : '-'}</td>
+                <td>
+                  <button onClick={() => setEditingItem(item)}>Edit</button>
+                </td>
+              </tr>
+            ))
+          }
         </tbody>
       </table>
 

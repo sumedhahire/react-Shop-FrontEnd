@@ -19,7 +19,7 @@ export default function Login() {
   data.append('grant_type', 'password');
 
   try {
-    const response = await axios.post('http://localhost:8080/api/login', data.toString(), {
+    const response = await axios.post('/api/login', data.toString(), {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },

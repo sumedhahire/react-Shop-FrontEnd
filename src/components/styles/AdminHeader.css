@@ -1,0 +1,25 @@
+.secondary-nav {
+  background-color: #f5f7fa;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  padding: 8px 32px;
+  gap: 24px;
+}
+
+.nav-tab {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.nav-tab:hover {
+  background-color: #e0e0e0;
+}
+
+.nav-tab.active {
+  background-color: #1abc9c;
+  color: white;
+}

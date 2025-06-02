@@ -10,7 +10,11 @@ export default function InventoryManager() {
     price: '',
     description: '',
     isActive: true,
+    tags: [''], // <-- default with empty tag
+    image: null,
   });
+  const [allTags,setAllTags] =useState([])
+
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
@@ -32,8 +36,20 @@ export default function InventoryManager() {
     }
   };
 
+  const fetchTags = async () => {
+  try {
+    const res = await axios.get('/api/v1/tag', {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    setAllTags(res.data.data.items || []);
+  } catch (err) {
+    console.error('Error loading tags:', err);
+  }
+};
+
   useEffect(() => {
     fetchProducts();
+     fetchTags();
   }, []);
 
   const handleAddChange = (e) => {
@@ -45,32 +61,44 @@ export default function InventoryManager() {
   };
 
   const handleAddSubmit = async (e) => {
-    e.preventDefault();
-    setError('');
-    setSuccess('');
+  e.preventDefault();
+  setError('');
+  setSuccess('');
 
-    try {
-      await axios.post(
-        '/api/v1/inventory/admin',
-        {
-          ...newProduct,
-          price: parseFloat(newProduct.price),
+  try {
+      const formData = new FormData();
+      formData.append('name', newProduct.name);
+      formData.append('price', newProduct.price);
+      formData.append('description', newProduct.description);
+      formData.append('isActive', newProduct.isActive);
+      formData.append('image', newProduct.image);
+
+      // Add tags as a JSON array string
+      formData.append('tag', JSON.stringify(newProduct.tags));
+
+      await axios.post('/api/v1/inventory/admin', formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data',
         },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        }
-      );
+      });
+
       setSuccess('Product added successfully!');
-      setNewProduct({ name: '', price: '', description: '', isActive: true });
+      setNewProduct({
+        name: '',
+        price: '',
+        description: '',
+        isActive: true,
+        tags: [],
+        image: null,
+      });
       fetchProducts();
     } catch (err) {
       console.error('Add product error:', err);
       setError('Failed to add product.');
     }
   };
+
 
   const handleUpdate = async (index) => {
     const product = products[index];
@@ -105,6 +133,15 @@ export default function InventoryManager() {
       <h2>Manage Inventory</h2>
 
       <form className="add-row" onSubmit={handleAddSubmit}>
+      <input
+          type="file"
+          name="image"
+          accept="image/*"
+          onChange={(e) =>
+            setNewProduct((prev) => ({ ...prev, image: e.target.files[0] }))
+          }
+      />
+
         <input
           name="name"
           placeholder="Name"
@@ -128,6 +165,24 @@ export default function InventoryManager() {
           onChange={handleAddChange}
           required
         />
+
+        <select
+            multiple
+            value={newProduct.tags}
+            onChange={(e) => {
+              const selected = Array.from(e.target.selectedOptions, (opt) => opt.value);
+              setNewProduct((prev) => ({ ...prev, tags: selected }));
+            }}
+            style={{ height: '100px', overflowY: 'auto' }}
+          >
+            {allTags.map((tag) => (
+              <option key={tag.id} value={tag.id}>
+                {tag.name}
+              </option>
+            ))}
+          </select>
+
+
         <label>
           Active{' '}
           <input

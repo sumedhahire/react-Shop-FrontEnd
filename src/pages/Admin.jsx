@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';                  // Site‐wide header
 import InventoryTable from '../components/InventoryTable';  // Table component
+import InventoryManager from '../components/InventoryManager'; 
+import UserList from '../components/UserList'
 import EditModal from '../components/EditModal';            // Modal for editing/adding
-import './styles/InventoryPage.css';
+import './styles/Admin.css';
+import AdminHeader from '../components/AdminHeader';
 
-export default function InventoryPage() {
+export default function Admin() {
   // Always start items as an empty array
   const [items, setItems] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
@@ -147,13 +150,12 @@ export default function InventoryPage() {
     <>
       {/* Site‐wide header */}
       <Header />
+      <AdminHeader></AdminHeader>
 
+      <InventoryManager></InventoryManager>
       <div className="inventory-page">
         <div className="inventory-top-bar">
           <h1 className="inventory-title">Browse Our Plants</h1>
-          <button className="add-button" onClick={handleAddClick}>
-            + Add Inventory
-          </button>
         </div>
 
         <div className="inventory-controls">
@@ -189,12 +191,15 @@ export default function InventoryPage() {
         </div>
 
       <InventoryTable
-  items={filteredItems}
-  token={localStorage.getItem('access_token')}
-  refreshItems={fetchItems}
-/>
+        items={filteredItems}
+        token={localStorage.getItem('access_token')}
+        refreshItems={fetchItems}
+      />
 
-       
+      {/* <UserList
+          token={localStorage.getItem('access_token')}
+      />
+        */}
       </div>
     </>
   );

@@ -7,8 +7,9 @@ import ProtectedRoute from './components/ProtectedRoute';
 import CartPage from './pages/CartPage';
 import AboutUs from './pages/AboutUs';
 import Profile from './pages/Profile';
-import InventoryPage from './pages/InventoryPage';
+import Admin from './pages/Admin';
 import NotFoundPage from './pages/NotFound';
+import UserPages from './pages/UserPages';
 
 function App() {
  
@@ -42,10 +43,20 @@ function App() {
       {token && userRole === 'admin' && (
         <Route path="/admin" element={
           <ProtectedRoute token={token} allowedRoles={['admin']}>
-            <InventoryPage />
+            <Admin />
           </ProtectedRoute>
         } />
+        
       )}
+
+      {token && userRole === 'admin' && (
+        <Route path="/users" element={
+          <ProtectedRoute token={token} allowedRoles={['admin']}>
+            <UserPages />
+          </ProtectedRoute>
+        } />
+        )}
+
       <Route path="*" element={<NotFoundPage />} />
 
     </Routes>

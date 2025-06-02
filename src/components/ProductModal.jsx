@@ -92,7 +92,6 @@ export default function ProductModal({ product, onClose }) {
       setLoading(false);
     }
   };
-
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
@@ -110,6 +109,20 @@ export default function ProductModal({ product, onClose }) {
           <div className="modal-info">
             <h2>{product.name}</h2>
             <p className="modal-price">₹{product.price}</p>
+
+            {/* Display tags */}
+            {product.tags && product.tags.length > 0 && (
+              <div className="modal-tags">
+                <strong>Tags: </strong>
+                {product.tags.map((tag, idx) => (
+                  <span key={idx} className="modal-tag">
+                    {tag}
+                    {idx < product.tags.length - 1 ? ', ' : ''}
+                  </span>
+                ))}
+              </div>
+            )}
+
             <p className="modal-description">{product.description}</p>
 
             <div className="modal-actions">
