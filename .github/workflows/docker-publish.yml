@@ -1,0 +1,44 @@
+name: Build & Push Docker Image
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      # 1) Checkout
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # 2) Lowercase GITHUB_REPOSITORY → REPO_LC (fixing the quoting!)
+      - name: Lowercase repo name
+        run: |
+          REPO_LC=$(echo "$GITHUB_REPOSITORY" | tr '[:upper:]' '[:lower:]')
+          echo "REPO_LC=${REPO_LC}" >> $GITHUB_ENV
+
+      # 2.1) DEBUG: print it out
+      - name: Debug:show REPO_LC
+        run: echo "Repo slug is:$REPO_LC"
+
+      # 3) Login
+      - name: Log in to GHCR
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # 4) Build & push (now using the correctly populated env.REPO_LC)
+      - name: Build & Push Docker Image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true
+          tags: ghcr.io/${{ env.REPO_LC }}:latest
